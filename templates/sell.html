@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content  %}
+</head>
+<body>
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+          <strong>
+            Message:
+          </strong>{{message}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">
+              &times;
+            </span>
+          </button>
+        </div>
+    {% endfor %}
+<h1 align="center">Sell</h1>
+<div class="body1"><ul>
+{% for n in selldata  %}
+<li><div class="product">
+    <img src="/media/{{n.item_img}}" alt="Product 1">  
+    
+    <div class="details">
+        <h2>{{n.item_title}}</h2>
+        <p>{{n.item_detail}}</p>
+        <ul>
+            <li>Quantity:-{{n.item_quant}}</li>
+            <li>Price/unit:-{{n.item_price}}</li>
+            <li>Date:-{{n.item_date}}</li>
+        </ul>
+        {% comment %} <div class="options">
+            <a href="#" class="sell-btn">Sell</a>
+        </div> {% endcomment %}
+    </div>
+    
+</div></li>
+{% endfor %}</ul>
+</div>
+{% if user.is_authenticated %}
+<h2>Item Details Form</h2>
+    <form action="{% url "saveSell" %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="item_image">Item Image:</label>
+        <input type="file" id="item_image" name="item_image" accept="image/*" required><br><br>
+
+        {% comment %} <label for="user_name">User Name:</label>
+        <input type="text" id="user_name" name="user_name" required><br><br> {% endcomment %}
+
+        <label for="item_name">Item Name:</label>
+        <input type="text" id="item_name" name="item_name" required><br><br>
+
+        <label for="item_details">Item Details:</label><br>
+        <textarea id="item_details" name="item_details" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="item_date">Item Date:</label>
+        <input type="date" id="item_date" name="item_date" required><br><br>
+
+        <label for="item_quantity">Item Quantity:</label>
+        <input type="number" id="item_quantity" name="item_quantity" min="1" required><br><br>
+
+        <label for="item_price">Item Price:</label>
+        <input type="number" id="item_price" name="item_price" min="0" step="0.01" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+{% else %}
+<p>Please <a href="{% url 'signin' %}">log in</a> to fill the sell form.</p>
+{% endif %}
+
+</body>
+<style>
+    
+
+.body1 {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    {% comment %} height: 100vh; {% endcomment %}
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    padding: 20px;
+}
+
+.product img {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.details {
+    flex: 1;
+}
+
+.options {
+    margin-top: 10px;
+}
+
+.sell-btn, .buy-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.sell-btn:hover, .buy-btn:hover {
+    background-color: #0056b3;
+}
+
+.footer{
+    background-color: #57871f87;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    align-self: end;
+        
+
+
+    }
+</style>
+{% endblock  %}
